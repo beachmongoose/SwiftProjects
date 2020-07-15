@@ -13,6 +13,7 @@
 		9F10169724BF6A09002E5B92 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F10169524BF6A09002E5B92 /* Main.storyboard */; };
 		9F10169924BF6A09002E5B92 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F10169824BF6A09002E5B92 /* Assets.xcassets */; };
 		9F10169C24BF6A09002E5B92 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F10169A24BF6A09002E5B92 /* LaunchScreen.storyboard */; };
+		9F35D68024BF968E000FE30A /* start.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9F35D67F24BF968D000FE30A /* start.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		9F10169824BF6A09002E5B92 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F10169B24BF6A09002E5B92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F10169D24BF6A09002E5B92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9F35D67F24BF968D000FE30A /* start.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = start.txt; path = Content/start.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				9F10169824BF6A09002E5B92 /* Assets.xcassets */,
 				9F10169A24BF6A09002E5B92 /* LaunchScreen.storyboard */,
 				9F10169D24BF6A09002E5B92 /* Info.plist */,
+				9F35D67F24BF968D000FE30A /* start.txt */,
 			);
 			path = Project5;
 			sourceTree = "<group>";
@@ -126,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F10169C24BF6A09002E5B92 /* LaunchScreen.storyboard in Resources */,
+				9F35D68024BF968E000FE30A /* start.txt in Resources */,
 				9F10169924BF6A09002E5B92 /* Assets.xcassets in Resources */,
 				9F10169724BF6A09002E5B92 /* Main.storyboard in Resources */,
 			);
