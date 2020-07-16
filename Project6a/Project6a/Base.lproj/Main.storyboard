@@ -17,6 +17,9 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bSD-B0-z1p">
                                 <rect key="frame" x="107" y="100" width="200" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="bSD-B0-z1p" secondAttribute="height" multiplier="2:1" id="zp2-iK-zGg"/>
+                                </constraints>
                                 <state key="normal" image="us"/>
                                 <connections>
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yTd-QQ-NhR"/>
@@ -24,10 +27,16 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiy-E9-j4N">
                                 <rect key="frame" x="107" y="230" width="200" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="jiy-E9-j4N" secondAttribute="height" multiplier="2:1" id="9Go-Oe-Gs8"/>
+                                </constraints>
                                 <state key="normal" image="us"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-Z8-LU7">
                                 <rect key="frame" x="107" y="360" width="200" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="E3x-Z8-LU7" secondAttribute="height" multiplier="2:1" id="Bcb-Tz-UfQ"/>
+                                </constraints>
                                 <state key="normal" image="us"/>
                             </button>
                         </subviews>
@@ -36,7 +45,10 @@
                             <constraint firstItem="jiy-E9-j4N" firstAttribute="centerX" secondItem="bSD-B0-z1p" secondAttribute="centerX" id="0sH-Kj-8YX"/>
                             <constraint firstItem="bSD-B0-z1p" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="6SO-Qh-NcT"/>
                             <constraint firstItem="E3x-Z8-LU7" firstAttribute="top" secondItem="jiy-E9-j4N" secondAttribute="bottom" constant="30" id="CKz-Pz-1dX"/>
+                            <constraint firstItem="jiy-E9-j4N" firstAttribute="height" secondItem="bSD-B0-z1p" secondAttribute="height" id="Cxz-hd-qy8"/>
                             <constraint firstItem="jiy-E9-j4N" firstAttribute="top" secondItem="bSD-B0-z1p" secondAttribute="bottom" constant="30" id="V7q-CB-yIk"/>
+                            <constraint firstItem="E3x-Z8-LU7" firstAttribute="height" secondItem="jiy-E9-j4N" secondAttribute="height" id="YoU-1R-MFm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="E3x-Z8-LU7" secondAttribute="bottom" constant="20" id="ZM1-Dn-b3D"/>
                             <constraint firstItem="bSD-B0-z1p" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="12" id="gha-Nv-1tF"/>
                             <constraint firstItem="E3x-Z8-LU7" firstAttribute="centerX" secondItem="jiy-E9-j4N" secondAttribute="centerX" id="jnM-3L-8Of"/>
                         </constraints>
