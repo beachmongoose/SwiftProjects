@@ -11,26 +11,15 @@ import UIKit
 class ViewController: UITableViewController {
   var allWords = [String]()
   var usedWords = [String]()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
-      if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
-        if let startWords = try? String(contentsOf: startWordsURL){
-        allWords = startWords.components(separatedBy: "\n")
-        }
-      }
-    if allWords.isEmpty {
-      allWords = ["silkworm"]
-    }
     
-    startGame()
-    
+    // MARK: - Set up Game
+    gameSetup()
   }
-  func startGame() {
-    title = allWords.randomElement()
-    usedWords.removeAll(keepingCapacity: true)
-    tableView.reloadData()
-  }
+  
+    // MARK: - Set up Answer Input Field
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return usedWords.count
   }
@@ -50,34 +39,35 @@ class ViewController: UITableViewController {
     alertController.addAction(submitAction)
     present(alertController, animated: true)
   }
+  // MARK: - Check answer validity
   func submit(_ answer: String){
     let lowerAnswer = answer.lowercased()
-    
-    let errorTitle: String
-    let errorMessage: String
     
     if isPossible(word: lowerAnswer){
       if isOriginal(word: lowerAnswer){
         if isReal(word: lowerAnswer){
+          if isWord(word: lowerAnswer){
           usedWords.insert (answer, at: 0)
           
           let indexPath = IndexPath(row: 0, section: 0)
           tableView.insertRows(at: [indexPath], with: .automatic)
           
           return
+          } else {
+            showErrorMessage(errorTitle: "Root Word", errorMessage: "That's the word you were given!")
+          }
         } else {
-          errorTitle = "Word not recognized"
-          errorMessage = "You can't just make them up, you know!"
+          showErrorMessage(errorTitle: "World not recognized", errorMessage: "You can't just make them up, you know!")
         }
       } else {
-        errorTitle = "Word used already"
-        errorMessage = "Be more original!"
+        showErrorMessage(errorTitle: "Word used already", errorMessage: "Be more original!")
       }
     } else {
       guard let title = title?.lowercased() else { return }
-      errorTitle = "Word not possible"
-      errorMessage = "You can't spell that word from \(title)"
+      showErrorMessage(errorTitle: "Word not possible", errorMessage: "You can't spell that word from \(title)")
     }
+  }
+  func showErrorMessage (errorTitle: String, errorMessage: String) {
     let alertController = UIAlertController(title: errorTitle,message: errorMessage, preferredStyle: .alert)
     alertController.addAction(UIAlertAction(title: "OK", style: .default))
     present(alertController, animated: true)
@@ -95,7 +85,7 @@ class ViewController: UITableViewController {
     return true
   }
   func isOriginal(word: String) -> Bool {
-    return !usedWords.contains(word)
+    return !usedWords.contains(word) && !usedWords.contains(word.uppercased()) && !usedWords.contains(word.capitalized)
   }
   func isReal (word: String) -> Bool {
     let checker = UITextChecker()
@@ -103,5 +93,32 @@ class ViewController: UITableViewController {
     let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
     return misspelledRange.location == NSNotFound
   }
+  func isWord (word: String) -> Bool {
+    guard let tempWord = title?.lowercased() else {return false}
+    if word.lowercased() == tempWord {
+      return false
+      }
+    return true
+  }
 }
-
+private extension ViewController {
+  func gameSetup(){
+    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(startGame))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
+      if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
+        if let startWords = try? String(contentsOf: startWordsURL){
+        allWords = startWords.components(separatedBy: "\n")
+        }
+      }
+    if allWords.isEmpty {
+      allWords = ["silkworm"]
+    }
+    startGame()
+  }
+  
+  @objc func startGame() {
+    title = allWords.randomElement()
+    usedWords.removeAll(keepingCapacity: true)
+    tableView.reloadData()
+  }
+}
