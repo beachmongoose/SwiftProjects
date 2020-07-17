@@ -18,24 +18,23 @@ class ViewController: UITableViewController {
     tableUpdate()
   }
 
-
 }
-
-extension UITableViewController {
+// MARK: - Sets up table cells
+extension ViewController{
   
   func tableSetup() {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
      return listItems.count
     }
   }
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath)
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "listCells", for: indexPath)
     cell.textLabel?.text = listItems[indexPath.row]
     return cell
   }
 }
-
-extension UITableViewController {
+// MARK: - Prompt to Add Item
+extension ViewController {
   func addItem() {
       navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToList))
   }
@@ -44,17 +43,18 @@ extension UITableViewController {
       alertController.addTextField()
       
       let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak alertController] action in
-        guard let answer = alertController?.textFields?[0].text else { return }
-        self?.submit(toAdd)
+        guard let addItem = alertController?.textFields?[0].text else { return }
+        self?.submit(addItem)
       }
       alertController.addAction(submitAction)
       present(alertController, animated: true)
     }
   }
-extension UITableViewController {
+// MARK: - Update list with new item
+extension ViewController {
   func tableUpdate() {
-     func submit(toAdd: String) {
-          listItems.insert (toAdd, at: 0)
+     func submit(item: String) {
+          listItems.insert (item, at: 0)
           let indexPath = IndexPath(row: 0, section: 0)
             tableView.insertRows(at: [indexPath], with: .automatic)
     }
