@@ -20,7 +20,9 @@ class DetailViewController: UIViewController {
     <meta name ="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
+    <p style="font-family:helvetica;">
     \(detailItem.body)
+    </p>
     </body>
     </html>
     """
