@@ -116,14 +116,18 @@ extension ViewController {
     }
   
     func searchInput(search: String) {
-      filteredPetitions = []
-      for petition in petitions {
+      DispatchQueue.global(qos: .userInitiated).async {
+        self.filteredPetitions = []
+        for petition in self.petitions {
         if petition.contains(search) {
-          filteredPetitions.append(petition)
+          self.filteredPetitions.append(petition)
         }
       }
-      tableView.reloadData()
+      DispatchQueue.main.async {
+        self.tableView.reloadData()
+      }
     }
+  }
 }
 
 extension Petition {
