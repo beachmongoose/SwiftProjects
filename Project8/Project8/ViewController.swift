@@ -56,7 +56,9 @@ extension ViewController {
       scoreCheck()
     }
     else {
-      score -= 1
+      if score >= 1 {
+        score -= 1
+      }
       wrongAnswerAlert()
     }
   }
@@ -79,13 +81,13 @@ extension ViewController {
   }
   
   func scoreCheck() {
-    var flag = true
+    var allButtonsAreHidden = true
     for button in letterButtons {
       if button.isHidden == false {
-        flag = false
+        allButtonsAreHidden = false
       }
     }
-    if flag == true && activatedButtons.count == 0 {
+    if allButtonsAreHidden && activatedButtons.count == 0 {
       levelComplete()
     }
   }
