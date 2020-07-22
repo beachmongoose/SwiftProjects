@@ -7,17 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F5DFD5624C8BEB900970617 /* alphabet.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9F5DFD5424C8BEB900970617 /* alphabet.txt */; };
+		9F5DFD5724C8BEB900970617 /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9F5DFD5524C8BEB900970617 /* words.txt */; };
 		9FCEA2F824C77B6300189796 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCEA2F724C77B6300189796 /* AppDelegate.swift */; };
 		9FCEA2FA24C77B6300189796 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCEA2F924C77B6300189796 /* SceneDelegate.swift */; };
 		9FCEA2FC24C77B6300189796 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCEA2FB24C77B6300189796 /* ViewController.swift */; };
 		9FCEA2FF24C77B6300189796 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FCEA2FD24C77B6300189796 /* Main.storyboard */; };
 		9FCEA30124C77B6500189796 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FCEA30024C77B6500189796 /* Assets.xcassets */; };
 		9FCEA30424C77B6500189796 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FCEA30224C77B6500189796 /* LaunchScreen.storyboard */; };
-		9FCEA30C24C789E800189796 /* Alphabet.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9FCEA30B24C789E800189796 /* Alphabet.txt */; };
-		9FCEA30E24C789F100189796 /* Words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9FCEA30D24C789F100189796 /* Words.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F5DFD5424C8BEB900970617 /* alphabet.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = alphabet.txt; sourceTree = "<group>"; };
+		9F5DFD5524C8BEB900970617 /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
 		9FCEA2F424C77B6300189796 /* Day 41 Milestone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Day 41 Milestone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FCEA2F724C77B6300189796 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9FCEA2F924C77B6300189796 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -26,8 +28,6 @@
 		9FCEA30024C77B6500189796 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9FCEA30324C77B6500189796 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9FCEA30524C77B6500189796 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9FCEA30B24C789E800189796 /* Alphabet.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Alphabet.txt; sourceTree = SOURCE_ROOT; };
-		9FCEA30D24C789F100189796 /* Words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Words.txt; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,8 +67,8 @@
 				9FCEA30024C77B6500189796 /* Assets.xcassets */,
 				9FCEA30224C77B6500189796 /* LaunchScreen.storyboard */,
 				9FCEA30524C77B6500189796 /* Info.plist */,
-				9FCEA30B24C789E800189796 /* Alphabet.txt */,
-				9FCEA30D24C789F100189796 /* Words.txt */,
+				9F5DFD5424C8BEB900970617 /* alphabet.txt */,
+				9F5DFD5524C8BEB900970617 /* words.txt */,
 			);
 			path = "Day 41 Milestone";
 			sourceTree = "<group>";
@@ -131,11 +131,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FCEA30E24C789F100189796 /* Words.txt in Resources */,
 				9FCEA30424C77B6500189796 /* LaunchScreen.storyboard in Resources */,
 				9FCEA30124C77B6500189796 /* Assets.xcassets in Resources */,
 				9FCEA2FF24C77B6300189796 /* Main.storyboard in Resources */,
-				9FCEA30C24C789E800189796 /* Alphabet.txt in Resources */,
+				9F5DFD5724C8BEB900970617 /* words.txt in Resources */,
+				9F5DFD5624C8BEB900970617 /* alphabet.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

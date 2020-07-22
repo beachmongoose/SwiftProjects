@@ -1,8 +1,0 @@
-ELEPHANT: Animal
-SALAMANER: Animal
-HAMSTER: Animal
-ORANGUTAN: Animal
-CHIPMUNK: Animal
-KANGAROO: Animal
-ASPARAGUS: Vegetable
-ARTICHOKE: Vegetable
