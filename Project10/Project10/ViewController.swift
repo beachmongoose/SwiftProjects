@@ -43,31 +43,77 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
   
   override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let person = people[indexPath.item]
+  
+    let contactSelect = UIAlertController(title: "Contact Selected", message: nil, preferredStyle: .alert)
+        
+    contactSelect.addAction(UIAlertAction(title: "Delete", style: .default, handler: { action in
+      self.people.remove(at: indexPath.item)
+      self.collectionView.reloadData()
+    }))
+        
+    contactSelect.addAction(UIAlertAction(title: "Rename", style: .default, handler: { action in
+      self.rename(person)
+    }))
+
+    present(contactSelect, animated: true)
+  }
+  func rename(_ cell : Person) {
+    let person = cell
+    let contactRename = UIAlertController(title: "Enter Name", message: nil, preferredStyle: .alert)
+    contactRename.addTextField()
     
-    let alertController = UIAlertController(title: "Enter Name", message: nil, preferredStyle: .alert)
-    alertController.addTextField()
+    contactRename.addAction(UIAlertAction(title: "Cancel", style: .cancel))
     
-    alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-    
-    alertController.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak alertController] _ in
-      guard let newName = alertController?.textFields?[0].text else {return}
+    contactRename.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak contactRename] _ in
+      guard let newName = contactRename?.textFields?[0].text else {return}
       person.name = newName
       
       self?.collectionView.reloadData()
+      
     })
     
-    present(alertController, animated: true)
+    present(contactRename, animated: true)
+    
   }
-  
 }
 
 extension ViewController {
+  
   @objc func addNewPerson() {
-    let picker = UIImagePickerController()
-    picker.allowsEditing = true
-    picker.delegate = self
-    present(picker, animated: true)
+    let selectSource = UIAlertController(title: "Select Source", message: nil, preferredStyle: .alert)
+    
+    selectSource.addAction(UIAlertAction(title: "Camera", style: .default, handler: { action in
+      if UIImagePickerController.isSourceTypeAvailable(.camera) == false {
+        self.cameraError()
+        }
+    }))
+    
+    selectSource.addAction(UIAlertAction(title: "Library", style: .default, handler: usingLibrary))
+    
+    present(selectSource, animated: true)
+    }
+  
+  func usingLibrary(action: UIAlertAction) {
+    let selector = UIImagePickerController()
+    selector.allowsEditing = true
+    selector.delegate = self
+    present(selector, animated: true)
   }
+  
+  func usingCamera(action: UIAlertAction) {
+    let selector = UIImagePickerController()
+    selector.sourceType = .camera
+    selector.allowsEditing = true
+    present(selector, animated: true)
+  }
+  
+  func cameraError() {
+      let cameraAlert = UIAlertController (title: "Error", message: "Camera not available.", preferredStyle: .alert)
+      cameraAlert.addAction(UIAlertAction(title: "Back", style: .default))
+      
+      present (cameraAlert, animated: true)
+  }
+  
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
     guard let image = info[.editedImage] as? UIImage else {return }
     
@@ -82,6 +128,7 @@ extension ViewController {
     collectionView.reloadData()
     dismiss (animated: true)
   }
+  
   
   func documentsDirectory() -> URL {
     let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
