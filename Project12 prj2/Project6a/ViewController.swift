@@ -9,20 +9,34 @@
 import UIKit
 
 class ViewController: UIViewController {
+  
   @IBOutlet var button1: UIButton!
   @IBOutlet var button2: UIButton!
   @IBOutlet var button3: UIButton!
-
-var countries = [String]()
+  var countries = [String]()
   var score = 0
+  var pastScores = [Int]()
   var correctAnswer = 0
   var round = 0
   func newGame(action: UIAlertAction!) {
     score = 0
-    round = 0 }
-  var scores = [Int]()
+    round = 0
+    askQuestion(action: nil)
+  }
   
   override func viewDidLoad() {
+    let defaults = UserDefaults.standard
+    
+    if let savedScores = defaults.object(forKey: "scores") as? Data {
+      let jsonDecoder = JSONDecoder()
+      
+      do {
+          pastScores = try jsonDecoder.decode([Int].self, from: savedScores)
+        print("Loaded Scores")
+      } catch {
+          print("Failed to load scores")
+      }
+    }
     super.viewDidLoad()
       
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Score", style: .plain, target: self, action: #selector(viewScore))
@@ -44,7 +58,7 @@ var countries = [String]()
            alertController.addAction(UIAlertAction(title: "Back", style: .default))
              present (alertController, animated: true) }
 
-func askQuestion(action: UIAlertAction!) {
+  func askQuestion(action: UIAlertAction!) {
   countries.shuffle()
   correctAnswer = Int.random(in: 0...2)
 
@@ -55,7 +69,10 @@ func askQuestion(action: UIAlertAction!) {
   let topCountry = countries[correctAnswer].uppercased()
   self.title = "\(topCountry)"
   }
+}
 
+extension ViewController {
+  
   @IBAction func buttonTapped(_ sender: UIButton) {
   var title: String
   let selection = countries[sender.tag].uppercased()
@@ -69,17 +86,50 @@ func askQuestion(action: UIAlertAction!) {
       score -= 1 }
   round += 1
   
-  if round < 10 {
-  let alertController = UIAlertController (title: title, message: "Your score is \(score).", preferredStyle: .alert)
-  alertController.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
-    present (alertController, animated: true) }
-    else {
-     let finalAlert = UIAlertController (title: title, message: "Final Score: \(score)",
-      preferredStyle: .alert)
-    finalAlert.addAction(UIAlertAction(title: "New Game", style: .default, handler: askQuestion))
-     present (finalAlert, animated: true)
-    newGame(action: nil)
+    if round < 10 {
+    let alertController = UIAlertController (title: title, message: "Your score is \(score).", preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
+      present (alertController, animated: true) }
+    else if round == 10 && isNewHighScore() || pastScores.isEmpty {
+      endGame(with: "New High Score!")
+    } else {
+      endGame(with: "Correct")
+    }
+   }
   }
- }
+
+extension ViewController {
+  
+  func isNewHighScore() -> Bool {
+    for oldScore in pastScores {
+      if oldScore > score {
+      return false
+      }
+    }
+    return true
+  }
+  
+  func endGame(with scoreConfirm: String) {
+    let finalAlert = UIAlertController (title: scoreConfirm, message: "Final Score: \(score)",
+      preferredStyle: .alert)
+    finalAlert.addAction(UIAlertAction(title: "New Game", style: .default, handler: { action in
+      self.pastScores.append(self.score)
+      self.newGame(action: nil)
+      self.scoreSave()
+      }))
+      present (finalAlert, animated: true)
+  }
+  
+  func scoreSave() {
+    let jsonEncoder = JSONEncoder()
+    if let savedData = try? jsonEncoder.encode(pastScores) {
+      let defaults = UserDefaults.standard
+      defaults.set(savedData, forKey: "scores")
+      print("Score Saved")
+    } else {
+      print("No saved scores")
+    }
+  }
 }
+
 
