@@ -10,7 +10,6 @@ import UIKit
 
 class DetailViewController: UIViewController {
   @IBOutlet var imageView: UIImageView!
-  
     var selectedImage: String?
     var picNumber = 0
     var picCount = 0

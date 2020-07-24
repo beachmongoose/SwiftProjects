@@ -8,19 +8,19 @@
 
 import UIKit
 
-class ViewController: UICollectionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class ViewController: UITableViewController {
 var pictures = [String]()
-var images = [Image]()
 
-    override func viewDidLoad() {
+override func viewDidLoad() {
     super.viewDidLoad()
     navigationController?.navigationBar.prefersLargeTitles = true
     navigationItem.largeTitleDisplayMode = .never
     title = "Storm Viewer"
   
-    loadImages()
+  performSelector(inBackground: #selector(loadImages), with: nil)
   
 }
+  
   @objc func loadImages(){
     let fm = FileManager.default
     let path = Bundle.main.resourcePath!
@@ -29,36 +29,30 @@ var images = [Image]()
         if item.hasPrefix("nssl") {
             pictures.append(item)
             pictures.sort()
+            print(pictures.sorted)
         }
+      tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
     }
   }
 
-
-override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-return pictures.count }
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return pictures.count }
   
-override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-  guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Image", for: indexPath) as? ImageCell else {
-      fatalError("Didn't work")
-      }
-    let picture = pictures[indexPath.row]
-    cell.image.image = UIImage(named: picture)
-    cell.name.text = pictures[indexPath.row]
-    cell.image.layer.borderColor = UIColor(white: 0, alpha: 0.3).cgColor
-    cell.image.layer.borderWidth = 2
-    cell.image.layer.cornerRadius = 3
-    cell.layer.cornerRadius = 7
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
+    cell.textLabel?.text = pictures[indexPath.row]
     return cell
-    }
+  }
   
-override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    if let detailViewController = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      if let detailViewController = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
         detailViewController.selectedImage = pictures[indexPath.row]
         detailViewController.picCount = pictures.count
         detailViewController.picNumber = indexPath.row + 1
         navigationController?.pushViewController(detailViewController, animated: true)
-    }
-}
+      }
+  }
+  
 }
 
 
