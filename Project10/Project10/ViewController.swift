@@ -13,70 +13,13 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
   var people = [Person]()
   
   override func viewDidLoad() {
+    
     super.viewDidLoad()
     navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
   }
-  
-  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return people.count
-  }
-
-  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Person", for: indexPath) as? PersonCell else {
-          fatalError("Unable to dequeue PersonCell.")
-      }
-    let person = people[indexPath.item]
-    
-    cell.name.text = person.name
-    
-    let path = documentsDirectory().appendingPathComponent(person.image)
-    cell.imageView.image = UIImage(contentsOfFile: path.path)
-    
-    cell.imageView.layer.borderColor = UIColor(white: 0, alpha: 0.3).cgColor
-    cell.imageView.layer.borderWidth = 2
-    cell.imageView.layer.cornerRadius = 3
-    cell.layer.cornerRadius = 7
-    
-    return cell
-    
-  }
-  
-  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let person = people[indexPath.item]
-  
-    let contactSelect = UIAlertController(title: "Contact Selected", message: nil, preferredStyle: .alert)
-        
-    contactSelect.addAction(UIAlertAction(title: "Delete", style: .default, handler: { action in
-      self.people.remove(at: indexPath.item)
-      self.collectionView.reloadData()
-    }))
-        
-    contactSelect.addAction(UIAlertAction(title: "Rename", style: .default, handler: { action in
-      self.rename(person)
-    }))
-
-    present(contactSelect, animated: true)
-  }
-  func rename(_ cell : Person) {
-    let person = cell
-    let contactRename = UIAlertController(title: "Enter Name", message: nil, preferredStyle: .alert)
-    contactRename.addTextField()
-    
-    contactRename.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-    
-    contactRename.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak contactRename] _ in
-      guard let newName = contactRename?.textFields?[0].text else {return}
-      person.name = newName
-      
-      self?.collectionView.reloadData()
-      
-    })
-    
-    present(contactRename, animated: true)
-    
-  }
 }
 
+// MARK: - Add Contact
 extension ViewController {
   
   @objc func addNewPerson() {
@@ -85,13 +28,15 @@ extension ViewController {
     selectSource.addAction(UIAlertAction(title: "Camera", style: .default, handler: { action in
       if UIImagePickerController.isSourceTypeAvailable(.camera) == false {
         self.cameraError()
-        }
+      } else {
+        self.usingCamera(with: action)
+      }
     }))
     
     selectSource.addAction(UIAlertAction(title: "Library", style: .default, handler: usingLibrary))
     
     present(selectSource, animated: true)
-    }
+  }
   
   func usingLibrary(action: UIAlertAction) {
     let selector = UIImagePickerController()
@@ -100,7 +45,7 @@ extension ViewController {
     present(selector, animated: true)
   }
   
-  func usingCamera(action: UIAlertAction) {
+  func usingCamera(with action: UIAlertAction) {
     let selector = UIImagePickerController()
     selector.sourceType = .camera
     selector.allowsEditing = true
@@ -129,6 +74,74 @@ extension ViewController {
     dismiss (animated: true)
   }
   
+}
+
+// MARK: - Edit Contact
+extension ViewController {
+  
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let person = people[indexPath.item]
+  
+    let contactSelect = UIAlertController(title: "Contact Selected", message: nil, preferredStyle: .alert)
+        
+    contactSelect.addAction(UIAlertAction(title: "Delete", style: .default, handler: { action in
+      self.people.remove(at: indexPath.item)
+      self.collectionView.reloadData()
+    }))
+        
+    contactSelect.addAction(UIAlertAction(title: "Rename", style: .default, handler: { action in
+      self.rename(person)
+    }))
+
+    present(contactSelect, animated: true)
+  }
+  
+  func rename(_ cell : Person) {
+    let person = cell
+    let contactRename = UIAlertController(title: "Enter Name", message: nil, preferredStyle: .alert)
+    contactRename.addTextField()
+    
+    contactRename.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    
+    contactRename.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak contactRename] _ in
+      guard let newName = contactRename?.textFields?[0].text else {return}
+      person.name = newName
+      
+      self?.collectionView.reloadData()
+      
+    })
+    
+    present(contactRename, animated: true)
+    
+  }
+}
+
+
+// MARK: - View Setup
+extension ViewController {
+  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return people.count
+  }
+
+  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Person", for: indexPath) as? PersonCell else {
+          fatalError("Unable to dequeue PersonCell.")
+      }
+    let person = people[indexPath.item]
+    
+    cell.name.text = person.name
+    
+    let path = documentsDirectory().appendingPathComponent(person.image)
+    cell.imageView.image = UIImage(contentsOfFile: path.path)
+    
+    cell.imageView.layer.borderColor = UIColor(white: 0, alpha: 0.3).cgColor
+    cell.imageView.layer.borderWidth = 2
+    cell.imageView.layer.cornerRadius = 3
+    cell.layer.cornerRadius = 7
+    
+    return cell
+    
+  }
   
   func documentsDirectory() -> URL {
     let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
