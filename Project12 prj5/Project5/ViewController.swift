@@ -17,18 +17,7 @@ class ViewController: UITableViewController {
     
     // MARK: - Set up Game
     gameSetup()
-    
-    let defaults = UserDefaults.standard
-    
-    if let savedWords = defaults.object(forKey: "savedWords") as? Data {
-      let jsonDecoder = JSONDecoder()
-      
-      do {
-        usedWords = try jsonDecoder.decode([String].self, from: savedWords)
-      } catch {
-        print("Failed to load")
-      }
-    }
+  
     
   }
   
@@ -78,7 +67,8 @@ class ViewController: UITableViewController {
           
           let indexPath = IndexPath(row: 0, section: 0)
           tableView.insertRows(at: [indexPath], with: .automatic)
-          saveWords()
+          saveData(with: title!, as: "rootWord")
+          saveData(with: usedWords, as: "usedWords")
           return
   }
   func showErrorMessage (errorTitle: String, errorMessage: String) {
@@ -139,21 +129,26 @@ private extension ViewController {
   @objc func startGame() {
     title = allWords.randomElement()
     usedWords.removeAll(keepingCapacity: true)
-    saveRoot()
     tableView.reloadData()
   }
-  func saveWords() {
+  func saveData(with dataToSave: Any, as key: String) {
     let jsonEncoder = JSONEncoder()
-    if let savedData = try? jsonEncoder.encode(usedWords) {
+    if let savedData = try? jsonEncoder.encode(dataToSave) {
       let defaults = UserDefaults.standard
-      defaults.set(savedData, forKey: "usedWords")
+      defaults.set(savedData, forKey: key)
     }
   }
-    func saveRoot() {
-      let jsonEncoder = JSONEncoder()
-      if let savedData = try? jsonEncoder.encode(title) {
-        let defaults = UserDefaults.standard
-        defaults.set(savedData, forKey: "rootWord")
+  func loadData(with dataToLoad: Any, as key: String) {
+    let defaults = UserDefaults.standard
+    
+    if let savedData = defaults.object(forKey: "\(key)") as? Data {
+      let jsonDecoder = JSONDecoder()
+      
+      do {
+        dataToLoad = try jsonDecoder.decode([Any].self, from: savedData)
+      } catch {
+        print("Failed to load")
       }
     }
+  }
 }
