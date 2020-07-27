@@ -12,18 +12,22 @@ class ViewController: UITableViewController {
 var pictures = [String]()
 var viewCount = [Int]()
 
-override func viewDidLoad() {
+  override func viewDidLoad() {
     super.viewDidLoad()
     navigationController?.navigationBar.prefersLargeTitles = true
     navigationItem.largeTitleDisplayMode = .never
     title = "Storm Viewer"
   
-  loadImages()
-  addViewCount()
-  loadViewCount()
+    loadImages()
+    addViewCount()
+    loadViewCount()
+  }
+ 
 }
-  
-  @objc func loadImages(){
+
+// MARK: - Load View
+extension ViewController {
+  func loadImages(){
     let fm = FileManager.default
     let path = Bundle.main.resourcePath!
     let items = try! fm.contentsOfDirectory(atPath: path)
@@ -54,8 +58,10 @@ override func viewDidLoad() {
       }
     }
   }
-  
+}
 
+// MARK: - View Setup
+extension ViewController {
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return pictures.count }
   
@@ -69,9 +75,9 @@ override func viewDidLoad() {
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      if let detailViewController = storyboard?.instantiateViewController(withIdentifier: "Detail") as?
+    if let detailViewController = storyboard?.instantiateViewController(withIdentifier: "Detail") as?
       DetailViewController {
-        let numberSelected = indexPath.row
+      let numberSelected = indexPath.row
         viewCount[numberSelected] += 1
         save()
         tableView.reloadData()
@@ -86,8 +92,8 @@ override func viewDidLoad() {
     if let savedData = try? jsonEncoder.encode(viewCount) {
       let defaults = UserDefaults.standard
       defaults.set(savedData, forKey: "views")
-    } else{
-      print("Failed to save people.")
+    } else {
+      print("Failed to save")
     }
   }
 }
