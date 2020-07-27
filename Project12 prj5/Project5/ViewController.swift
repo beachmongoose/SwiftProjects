@@ -9,16 +9,17 @@
 import UIKit
 
 class ViewController: UITableViewController {
+  var userData = UserData()
   var allWords = [String]()
   var usedWords = [String]()
+  var rootWord = ""
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     // MARK: - Set up Game
     gameSetup()
-  
-    
+    loadData()
   }
   
     // MARK: - Set up Answer Input Field
@@ -46,7 +47,7 @@ class ViewController: UITableViewController {
     let lowerAnswer = answer.lowercased()
     
     guard isPossible(word: lowerAnswer) == true else {
-      showErrorMessage(errorTitle: "Word not possible", errorMessage: "You can't spell that word from \(title ?? "That word")")
+      showErrorMessage(errorTitle: "Word not possible", errorMessage: "You can't spell that word from \(title ?? "that word")")
       return
     }
     guard isOriginal(word: lowerAnswer) == true else {
@@ -63,13 +64,13 @@ class ViewController: UITableViewController {
     guard isMoreThanThree(word: lowerAnswer) == true else { showErrorMessage(errorTitle: "Too Small", errorMessage: "Try to think bigger.")
       return
     }
-          usedWords.insert (answer, at: 0)
-          
-          let indexPath = IndexPath(row: 0, section: 0)
-          tableView.insertRows(at: [indexPath], with: .automatic)
-          saveData(with: title!, as: "rootWord")
-          saveData(with: usedWords, as: "usedWords")
-          return
+    usedWords.insert(answer, at: 0)
+    
+    let indexPath = IndexPath(row: 0, section: 0)
+    tableView.insertRows(at: [indexPath], with: .automatic)
+    userData.usedWords = usedWords
+    saveData()
+    return
   }
   func showErrorMessage (errorTitle: String, errorMessage: String) {
     let alertController = UIAlertController(title: errorTitle,message: errorMessage, preferredStyle: .alert)
@@ -129,26 +130,31 @@ private extension ViewController {
   @objc func startGame() {
     title = allWords.randomElement()
     usedWords.removeAll(keepingCapacity: true)
+    rootWord = title!
+    userData.rootWord = rootWord
     tableView.reloadData()
   }
-  func saveData(with dataToSave: Any, as key: String) {
+
+  func saveData() {
     let jsonEncoder = JSONEncoder()
-    if let savedData = try? jsonEncoder.encode(dataToSave) {
+    if let savedData = try? jsonEncoder.encode(userData) {
       let defaults = UserDefaults.standard
-      defaults.set(savedData, forKey: key)
+      defaults.set(savedData, forKey: "data")
     }
   }
-  func loadData(with dataToLoad: Any, as key: String) {
+  func loadData() {
     let defaults = UserDefaults.standard
-    
-    if let savedData = defaults.object(forKey: "\(key)") as? Data {
+
+    if let savedData = defaults.object(forKey: "data") as? Data {
       let jsonDecoder = JSONDecoder()
-      
+
       do {
-        dataToLoad = try jsonDecoder.decode([Any].self, from: savedData)
+        userData = try jsonDecoder.decode(UserData.self, from: savedData)
       } catch {
-        print("Failed to load")
+             print("Failed to load")
       }
     }
+    rootWord = userData.rootWord
+    usedWords = userData.usedWords
   }
 }
