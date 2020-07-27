@@ -87,7 +87,7 @@ override func viewDidLoad() {
       let defaults = UserDefaults.standard
       defaults.set(savedData, forKey: "views")
     } else{
-      print("Failed to save people.")
+      print("Failed to save data.")
     }
   }
 }
