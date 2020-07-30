@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
   var images = [ImageData]()
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     loadData()
@@ -112,45 +112,48 @@ extension ViewController {
     }))
         
     imageSelect.addAction(UIAlertAction(title: "Rename", style: .default, handler: { action in
-      self.rename(for: image)
+      self.rename(image, at: path.row)
     }))
 
     present(imageSelect, animated: true)
   }
   
-  func rename(for image: ImageData) {
-    
+  func rename(_ image: ImageData, at index: Int) {
     let imageRename = UIAlertController(title: "Enter Name", message: nil, preferredStyle: .alert)
     imageRename.addTextField()
     imageRename.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    
     imageRename.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak imageRename] _ in
+      guard let self = self else { return }
       guard let newName = imageRename?.textFields?[0].text else {return}
-//      image.name = newName
-      self?.save(all: self!.images)
-      self?.tableView.reloadData()
+      let renamedImage = ImageData(imagePath: image.imagePath, name: newName)
+      self.images[index] = renamedImage
+      self.save(all: self.images)
+      self.tableView.reloadData()
     })
     present(imageRename, animated: true)
   }
   
+
 }
 
 // MARK: - View Setup
 extension ViewController {
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       return images.count
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      guard let cell = tableView.dequeueReusableCell(withIdentifier: "Table", for: indexPath) as? ImageClass else {
+      guard let cell = tableView.dequeueReusableCell(withIdentifier: "Table", for: indexPath) as? ImageCell else {
         fatalError("Unable to dequeue")
       }
+      
       let currentData = images[indexPath.row]
-      cell.textLabel?.text = currentData.name
-
-      cell.imageView?.image = currentData.displayImage
+      cell.pictureTitleLabel?.text = currentData.name
+      cell.picture.image = currentData.displayImage
       
       return cell
     }
+    
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
       return 140.0
   }

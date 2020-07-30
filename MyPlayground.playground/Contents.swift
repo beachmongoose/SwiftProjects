@@ -35,3 +35,16 @@ let shipNames = ["Merry", "Sunny", "Moby Dick"]
 
 print(ships(name: shipNames))
 
+
+let input = ["1", "5", "Fish"]
+let numbers = input.compactMap {Int($0)}
+print(numbers)
+
+let boxes = ["redline", "reddot", "redboat", "redhouse", "bluedot", "bluehouse", "bluebox"]
+
+let redboxes = boxes.filter { $0.hasPrefix("red") }
+print(redboxes)
+
+let points = Array(1...100)
+let sum = points.reduce(0,+)
+print(sum)
