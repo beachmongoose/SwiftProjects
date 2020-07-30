@@ -12,11 +12,6 @@ import UIKit
 struct ImageData: Codable {
   var imagePath: String
   var name: String
-  
-//  init(image: String, name: String) {
-//    self.image = image
-//    self.name = name
-//  }
 }
 extension ImageData {
   var displayImage: UIImage {

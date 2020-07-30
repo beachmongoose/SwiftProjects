@@ -14,7 +14,7 @@
 		9F6C498724CF4E4E00697BF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F6C498624CF4E4E00697BF6 /* Assets.xcassets */; };
 		9F6C498A24CF4E4E00697BF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F6C498824CF4E4E00697BF6 /* LaunchScreen.storyboard */; };
 		9F6C499224CF517B00697BF6 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6C499124CF517B00697BF6 /* ImageData.swift */; };
-		9F6C499424CF723600697BF6 /* ImageClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6C499324CF723600697BF6 /* ImageClass.swift */; };
+		9F6C499424CF723600697BF6 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6C499324CF723600697BF6 /* ImageCell.swift */; };
 		9F6C499824CF87D400697BF6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6C499724CF87D400697BF6 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +28,7 @@
 		9F6C498924CF4E4E00697BF6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F6C498B24CF4E4E00697BF6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F6C499124CF517B00697BF6 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
-		9F6C499324CF723600697BF6 /* ImageClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageClass.swift; sourceTree = "<group>"; };
+		9F6C499324CF723600697BF6 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		9F6C499724CF87D400697BF6 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,7 +66,7 @@
 				9F6C497F24CF4E4B00697BF6 /* SceneDelegate.swift */,
 				9F6C498124CF4E4B00697BF6 /* ViewController.swift */,
 				9F6C499124CF517B00697BF6 /* ImageData.swift */,
-				9F6C499324CF723600697BF6 /* ImageClass.swift */,
+				9F6C499324CF723600697BF6 /* ImageCell.swift */,
 				9F6C498324CF4E4B00697BF6 /* Main.storyboard */,
 				9F6C499724CF87D400697BF6 /* DetailViewController.swift */,
 				9F6C498624CF4E4E00697BF6 /* Assets.xcassets */,
@@ -149,7 +149,7 @@
 			files = (
 				9F6C498224CF4E4B00697BF6 /* ViewController.swift in Sources */,
 				9F6C497E24CF4E4B00697BF6 /* AppDelegate.swift in Sources */,
-				9F6C499424CF723600697BF6 /* ImageClass.swift in Sources */,
+				9F6C499424CF723600697BF6 /* ImageCell.swift in Sources */,
 				9F6C499824CF87D400697BF6 /* DetailViewController.swift in Sources */,
 				9F6C498024CF4E4B00697BF6 /* SceneDelegate.swift in Sources */,
 				9F6C499224CF517B00697BF6 /* ImageData.swift in Sources */,
