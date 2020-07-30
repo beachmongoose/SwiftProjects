@@ -12,6 +12,7 @@ import CoreImage
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate{
   @IBOutlet var imageView: UIImageView!
   @IBOutlet var intensity: UISlider!
+  @IBOutlet var filterButton: UIButton!
   var currentImage: UIImage!
   var context: CIContext!
   var currentFilter: CIFilter!
@@ -24,6 +25,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     context = CIContext()
     currentFilter = CIFilter(name: "CISepiaTone")
+    filterButton.setTitle(currentFilter.name, for: .normal)
+    
   }
 
   @objc func importPicture() {
@@ -63,37 +66,34 @@ extension ViewController {
   }
   
   func setFilter(action: UIAlertAction) {
-    guard currentImage != nil else { return }
+    guard currentImage != nil else {
+      showMessage(title: "Error", message: "Please select image first.")
+      return }
     
     guard let actionTitle = action.title else { return }
     
     currentFilter = CIFilter(name: actionTitle)
-    
+
     let beginImage = CIImage(image: currentImage)
-    
+    filterButton.setTitle(currentFilter.name, for: .normal)
     currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
-    
     applyProcessing()
   }
   
   @IBAction func save(_ sender: Any) {
-      guard let image = imageView.image else { return }
+      guard let image = imageView.image else {
+        showMessage(title: "Save Error", message: "No image to save.")
+      return }
       
       UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
   
   @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
     if let error = error {
-      
-      let alert = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "OK", style: .default))
-      present(alert, animated: true)
-      
+      showMessage(title: "Save error", message: error.localizedDescription)
+      return
     } else {
-      
-      let alert = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "OK", style: .default))
-      present(alert, animated: true)
+      showMessage(title: "Saved!", message: "Your altered image has been saved to your photos.")
     }
   }
   
@@ -111,6 +111,12 @@ extension ViewController {
       let processedImage = UIImage(cgImage: cgimg)
       self.imageView.image = processedImage
     }
+  }
+  
+  func showMessage (title: String, message: String) {
+    let alertController = UIAlertController(title: title,message: message, preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: "OK", style: .default))
+    present(alertController, animated: true)
   }
 }
 
