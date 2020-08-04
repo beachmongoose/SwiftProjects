@@ -1,0 +1,15 @@
+{"countries": [
+{
+"name": "United States",
+"details": "Capital: Washington D.C.\nAnthem: The Star-Spangled Banner\nEstablishment: 1776\nNational Language(s): English\nGovernment: Presidential Constitutional Republic\nPopulation: 328,239,523\nColonialism: Yes"
+},
+{
+"name": "Canada",
+"details": "Capital: Ottawa\nAnthem: O Canada\nEstablishment: 496\nNational Language(s): English, French\nGovernment: Parliamentary Constitutional Monarchy\nPopulation: 37,971,020\nColonialism: Yes"
+},
+{
+"name": "France",
+"details": "Capital: Paris\nAnthem: La Marseillaise\nEstablishment: 1867\nNational Language(s): French\nGovernment: Semi Presidential Constitutional Republic\nPopulation: 67,081,000\nColonialism: Yes"
+}
+]
+}
