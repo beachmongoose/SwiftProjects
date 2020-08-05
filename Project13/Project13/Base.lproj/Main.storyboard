@@ -137,7 +137,7 @@
                         <outlet property="imageView" destination="wq2-fP-5ml" id="pp9-xe-A5e"/>
                         <outlet property="intensity" destination="yRz-fM-r6n" id="Uw4-0M-zf6"/>
                         <outlet property="radius" destination="K0Y-ny-Y0Z" id="XF4-G5-BT5"/>
-                        <outlet property="scale" destination="hXv-wK-gfi" id="Frn-Wp-7z8"/>
+                        <outlet property="scale" destination="Bom-rG-Joz" id="pHs-Ez-2nY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
