@@ -9,23 +9,21 @@
 import UIKit
 import WebKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, WKNavigationDelegate {
 
+  @IBOutlet var webView: WKWebView!
+  var site: String?
+  
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        goToWeb(site!)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+  func goToWeb(_ site: String) {
+    webView = WKWebView()
+    webView.navigationDelegate = self
+    view = webView
+    let url = URL(string: "https://en.wikipedia.org/wiki/" + site)!
+    webView.load(URLRequest(url: url))
+  }
 }
