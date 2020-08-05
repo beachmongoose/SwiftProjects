@@ -66,18 +66,11 @@ class ViewController: UIViewController, MKMapViewDelegate, WKNavigationDelegate 
   
   func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
     guard let site = view.annotation as? Capital else { return }
-    goToWeb(site.url)
-    
-  }
-  func goToWeb(_ site: String) {
-    webView = WKWebView()
-    webView.navigationDelegate = self
-    view = webView
-    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action:  #selector(closeWeb))
-    let url = URL(string: "https://en.wikipedia.org/wiki/" + site)!
-    webView.load(URLRequest(url: url))
-  }
-  @objc func closeWeb() {
+    if let detailViewController = storyboard?.instantiateViewController(withIdentifier: "webSite") as? DetailViewController {
+      detailViewController.site = site.url
+      detailViewController.goToWeb(site.url)
+      navigationController?.pushViewController(detailViewController, animated: true)
+    }
   }
 }
 
