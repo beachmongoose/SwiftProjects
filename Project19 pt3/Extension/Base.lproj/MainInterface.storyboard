@@ -29,6 +29,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cpj-Ae-nSN">
                                 <rect key="frame" x="206" y="266" width="34" height="30"/>
                                 <state key="normal" title="Load"/>
+                                <connections>
+                                    <segue destination="YeX-HV-264" kind="show" identifier="dataTransfer" id="ZaR-yq-Bxe"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -56,7 +59,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1042.0289855072465" y="93.75"/>
+            <point key="canvasLocation" x="899" y="80"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sha-4B-YE7">
@@ -85,7 +88,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="alj-rq-H4I">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="ifm-zP-hcl">
@@ -112,6 +115,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Mbt-5A-6bo"/>
                     </view>
+                    <navigationItem key="navigationItem" id="f4a-tU-Ukp"/>
                     <connections>
                         <outlet property="tableView" destination="alj-rq-H4I" id="ADx-BD-UKh"/>
                     </connections>
