@@ -9,22 +9,17 @@
 import UIKit
 import MobileCoreServices
 
-class ActionViewController: UIViewController {
+class ActionViewController: UIViewController, SiteDelegate {
+  
   @IBOutlet var script: UITextView!
   @IBOutlet var saveButton: UIButton!
   @IBOutlet var loadButton: UIButton!
-  var siteCodes = [websiteCode]()
+  var codeLibrary = [savedCode]()
   
   var pageTitle = ""
-  var pageURL = "" {
-  didSet {
-    urlCheck(pageURL)
-    }
-  }
+  var pageURL = ""
   
     override func viewDidLoad() {
-      
-      script.text = "Enter Code Here"
       
       loadSavedCodes()
       
@@ -35,6 +30,19 @@ class ActionViewController: UIViewController {
       setUpKeyboardConfiguration()
 
     }
+  
+  func bringOver(loadedCode: String) {
+    script.text = loadedCode
+  }
+  
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == "dataTransfer" {
+      let vc = segue.destination as! ListViewController
+      vc.delegate = self
+      vc.codeLibrary = codeLibrary
+    }
+  }
+  
 }
 
 // MARK: - Setup
@@ -44,8 +52,8 @@ extension ActionViewController {
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
       super.viewDidLoad()
     navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Defaults", style: .plain, target: self, action: #selector(defaultsMenu))
-    saveButton.addTarget(self, action: #selector(save), for: .touchUpInside)
-    loadButton.addTarget(self, action: #selector(viewList), for: .touchUpInside)
+    saveButton.addTarget(self, action: #selector(nameCode), for: .touchUpInside)
+//    loadButton.addTarget(self, action: #selector(viewList), for: .touchUpInside)
   }
   
   func setUpKeyboardConfiguration() {
@@ -123,14 +131,30 @@ extension ActionViewController {
 }
 
 extension ActionViewController {
+  @objc func nameCode() {
+    let code = self.script.text
+    
+    let saveFunc = UIAlertController(title: "Enter Name", message: nil, preferredStyle: .alert)
+    saveFunc.addTextField()
+    saveFunc.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    let submitCode = UIAlertAction(title: "Submit", style: .default) { [weak self, weak saveFunc] action in
+      guard let name = saveFunc?.textFields?[0].text else { return }
+      if code!.isEmpty && name.isEmpty {
+        return
+      }
+      self!.save(the: name, and: code!)
+    }
+    saveFunc.addAction(submitCode)
+    present(saveFunc, animated: true)
+  }
   
-  @objc func save() {
-    let newEntry = websiteCode(url: self.pageURL, code: self.script.text)
-    siteCodes.append(newEntry)
+  func save(the name: String, and code: String) {
+    let newEntry = savedCode(name: name, code: code)
+    codeLibrary.append(newEntry)
     let jsonEncoder = JSONEncoder()
-    if let savedData = try? jsonEncoder.encode(siteCodes) {
+    if let savedData = try? jsonEncoder.encode(codeLibrary) {
       let defaults = UserDefaults.standard
-      defaults.set(savedData, forKey: "siteCodes")
+      defaults.set(savedData, forKey: "codeLibrary")
     } else{
       print("Failed to save")
     }
@@ -142,32 +166,21 @@ extension ActionViewController {
   func loadSavedCodes() {
     let defaults = UserDefaults.standard
     
-    if let codeData = defaults.object(forKey: "siteCodes") as? Data {
+    if let codeData = defaults.object(forKey: "codeLibrary") as? Data {
       let jsonDecoder = JSONDecoder()
       
       do {
-          siteCodes = try jsonDecoder.decode([websiteCode].self, from: codeData)
+          codeLibrary = try jsonDecoder.decode([savedCode].self, from: codeData)
       } catch {
           print("Failed to load")
       }
     }
   }
-  
-  func urlCheck(_ address: String) {
-    for entry in siteCodes {
-      if entry.url.contains(address) {
-        self.script.text = entry.code
-        done()
-          } else {
-          return
-        }
-      }
-    }
-  
-  @objc func viewList() {
-    if let listViewController = storyboard?.instantiateViewController(withIdentifier: "Library") as? ListViewController {
-        listViewController.siteCodes = siteCodes
-        navigationController?.pushViewController(listViewController, animated: true)
-    }
-  }
+//  @objc func viewList() {
+//    if let listViewController = storyboard?.instantiateViewController(withIdentifier: "Library") as? ListViewController {
+//      listViewController.codeLibrary = codeLibrary
+//      performSegue(withIdentifier: "dataTransfer", sender: nil)
+//      navigationController?.pushViewController(listViewController, animated: true)
+//    }
+//  }
 }
