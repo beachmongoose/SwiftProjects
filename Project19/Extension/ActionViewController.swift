@@ -9,18 +9,14 @@
 import UIKit
 import MobileCoreServices
 
-class ActionViewController: UIViewController {
+class ActionViewController: UIViewController{
   @IBOutlet var script: UITextView!
   @IBOutlet var saveButton: UIButton!
   @IBOutlet var loadButton: UIButton!
   var siteCodes = [websiteCode]()
-  
+
   var pageTitle = ""
-  var pageURL = "" {
-  didSet {
-    urlCheck(pageURL)
-    }
-  }
+  var pageURL = ""
   
     override func viewDidLoad() {
       
@@ -34,6 +30,7 @@ class ActionViewController: UIViewController {
       
       setUpKeyboardConfiguration()
 
+      
     }
 }
 
@@ -80,6 +77,8 @@ extension ActionViewController {
           guard let javaScriptValues = itemDictionary[NSExtensionJavaScriptPreprocessingResultsKey] as? NSDictionary else { return }
           self?.pageTitle = javaScriptValues["title"] as? String ?? ""
           self?.pageURL = javaScriptValues["URL"] as? String ?? ""
+
+          self!.urlCheck(self!.pageURL)
           
           DispatchQueue.main.async {
             self?.title = self?.pageTitle

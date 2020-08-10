@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F8A3B1E24E1B19C00C29173 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FA3A5C824DD9B94005AF59D /* Info.plist */; };
+		9F8A3B1F24E1B25900C29173 /* savedCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3A5D824DDC302005AF59D /* savedCode.swift */; };
+		9F8A3B2024E1B25900C29173 /* websiteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3A5DC24DDE91D005AF59D /* websiteCode.swift */; };
 		9FA3A5A824DD9A50005AF59D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3A5A724DD9A50005AF59D /* AppDelegate.swift */; };
 		9FA3A5AA24DD9A50005AF59D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3A5A924DD9A50005AF59D /* SceneDelegate.swift */; };
 		9FA3A5AC24DD9A50005AF59D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3A5AB24DD9A50005AF59D /* ViewController.swift */; };
@@ -19,8 +22,6 @@
 		9FA3A5CB24DD9B94005AF59D /* Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9FA3A5BF24DD9B94005AF59D /* Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9FA3A5D124DD9E1C005AF59D /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 9FA3A5D024DD9E1C005AF59D /* Action.js */; };
 		9FA3A5D324DDBC8B005AF59D /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3A5D224DDBC8B005AF59D /* ListViewController.swift */; };
-		9FA3A5D924DDC302005AF59D /* savedCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3A5D824DDC302005AF59D /* savedCode.swift */; };
-		9FA3A5DD24DDE91D005AF59D /* websiteCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA3A5DC24DDE91D005AF59D /* websiteCode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9F8A3B1924E1AA8900C29173 /* Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Extension.entitlements; sourceTree = "<group>"; };
 		9FA3A5A424DD9A50005AF59D /* Project19.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Project19.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FA3A5A724DD9A50005AF59D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9FA3A5A924DD9A50005AF59D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 		9FA3A5C024DD9B94005AF59D /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				9F8A3B1924E1AA8900C29173 /* Extension.entitlements */,
 				9FA3A5C124DD9B94005AF59D /* Media.xcassets */,
 				9FA3A5D224DDBC8B005AF59D /* ListViewController.swift */,
 				9FA3A5C324DD9B94005AF59D /* ActionViewController.swift */,
@@ -223,6 +226,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F8A3B1E24E1B19C00C29173 /* Info.plist in Resources */,
 				9FA3A5D124DD9E1C005AF59D /* Action.js in Resources */,
 				9FA3A5C224DD9B94005AF59D /* Media.xcassets in Resources */,
 				9FA3A5C724DD9B94005AF59D /* MainInterface.storyboard in Resources */,
@@ -246,9 +250,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F8A3B1F24E1B25900C29173 /* savedCode.swift in Sources */,
+				9F8A3B2024E1B25900C29173 /* websiteCode.swift in Sources */,
 				9FA3A5D324DDBC8B005AF59D /* ListViewController.swift in Sources */,
-				9FA3A5D924DDC302005AF59D /* savedCode.swift in Sources */,
-				9FA3A5DD24DDE91D005AF59D /* websiteCode.swift in Sources */,
 				9FA3A5C424DD9B94005AF59D /* ActionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -446,6 +450,7 @@
 		9FA3A5CD24DD9B94005AF59D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/Extension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4DW86QYDM7;
 				INFOPLIST_FILE = Extension/Info.plist;
@@ -454,7 +459,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Project19.Extension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.Project19.Ext;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -465,6 +470,7 @@
 		9FA3A5CE24DD9B94005AF59D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/Extension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4DW86QYDM7;
 				INFOPLIST_FILE = Extension/Info.plist;
@@ -473,7 +479,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Project19.Extension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.Project19.Ext;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
