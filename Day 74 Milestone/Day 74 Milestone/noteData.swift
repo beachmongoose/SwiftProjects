@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct noteData: Codable {
+struct noteData: Codable, Equatable {
   var title: String
   var body: String
   var date: String

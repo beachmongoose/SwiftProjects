@@ -8,8 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, DataDelegate {
-  @IBOutlet var noteTable: UITableView!
+class ViewController: UIViewController {
+  @IBOutlet var noteCount: UILabel!
+  @IBOutlet var tableView: UITableView!
   var savedNotes = [noteData]()
   var delegate: DataDelegate?
   var todaysDate: String {
@@ -17,24 +18,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     formatter.dateStyle = .short
     return(formatter.string(from: Date()))
   }
-  let deleteButton = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(massDelete))
-  let confirmButton = UIBarButtonItem(title: "Confirm", style: .plain, target: self, action: #selector(confirmDelete))
-  let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(abort))
-  let composeButton = UIBarButtonItem(title: "Compose", style: .plain, target: self, action: #selector(createNewNote))
   
   override func viewDidLoad() {
-  
     loadData()
-    
-    super.viewDidLoad()
-    
     navigationButtons()
-  
-  }
 
-  func bringOver(savedData: [noteData]) {
-    savedNotes = savedData
-    noteTable.reloadData()
+    super.viewDidLoad()
   }
 
 }
@@ -52,34 +41,6 @@ extension ViewController {
       }
   }
   
-  @objc func massDelete() {
-    noteTable.isEditing = !isEditing
-    self.navigationItem.rightBarButtonItem = confirmButton
-    self.navigationItem.leftBarButtonItem = cancelButton
-  }
-  
-  func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCell.EditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-   if editingStyle == .delete {
-    savedNotes.remove(at: indexPath.row)
-   }
-  }
-  
-  @objc func confirmDelete() {
-    
-    let deleteConfirm = UIAlertController(title: "Notes Deleted", message: nil, preferredStyle: .alert)
-    deleteConfirm.addAction(UIAlertAction(title: "OK", style: .default))
-    present(deleteConfirm, animated: true)
-    self.navigationItem.rightBarButtonItem = deleteButton
-    
-  }
-  
-  @objc func abort() {
-    noteTable.isEditing = false
-    self.navigationItem.rightBarButtonItem = deleteButton
-    self.navigationItem.leftBarButtonItem = composeButton
-  }
-  
-  
   func loadData() {
     let defaults = UserDefaults.standard
     if let notesData = defaults.object(forKey: "savedNotes") as? Data {
@@ -91,22 +52,18 @@ extension ViewController {
         print("Failed to load")
       }
     }
+    updateNotesNumber()
+    
+    tableView.reloadData()
   }
   
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.identifier == "sendData" {
-      let vc = segue.destination as! DetailViewController
-      vc.delegate = self
-      vc.savedNotes = savedNotes
-    }
-  }
 }
 
 // MARK: - Table
-extension ViewController {
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
+    let header = tableView.dequeueReusableCell(withIdentifier: "header")
     return header
   }
 
@@ -127,7 +84,9 @@ extension ViewController {
     
     cell.cellTitle.text = note.title
     cell.cellBody.text = getPreviewLine(for: note)
+    cell.cellBody.lineBreakMode = .byTruncatingTail
     cell.cellDate.text = note.date
+    cell.selectionStyle = .none
     return cell
   }
 
@@ -137,26 +96,24 @@ extension ViewController {
       detailViewController.arrayNumber = indexPath.row
       detailViewController.isNewNote = false
       detailViewController.savedNotes = savedNotes
+      detailViewController.delegate = self
       navigationController?.pushViewController(detailViewController, animated: true)
     }
   }
 }
 
 // MARK: - Input
-extension ViewController {
+extension ViewController: UIGestureRecognizerDelegate {
   func navigationButtons() {
-    let deleteButton = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(massDelete))
-    self.navigationItem.rightBarButtonItem = deleteButton
-    let composeButton = UIBarButtonItem(title: "Compose", style: .plain, target: self, action: #selector(createNewNote))
-    self.navigationItem.leftBarButtonItem = composeButton
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Compose", style: .plain, target: self, action: #selector(createNewNote))
     let longPressCheck = UILongPressGestureRecognizer(target: self, action: #selector(longPress))
     view.addGestureRecognizer(longPressCheck)
   }
   
   @objc func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
     if longPressGestureRecognizer.state == UIGestureRecognizer.State.began {
-      let touchPoint = longPressGestureRecognizer.location(in: noteTable)
-      if let selectedNote = noteTable.indexPathForRow(at: touchPoint) {
+      let touchPoint = longPressGestureRecognizer.location(in: tableView)
+      if let selectedNote = tableView.indexPathForRow(at: touchPoint) {
         showOptions(selectedNote.row)
       }
     }
@@ -167,7 +124,8 @@ extension ViewController {
     optionsAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { action in
       self.savedNotes.remove(at: noteLocation)
       self.save()
-      self.noteTable.reloadData()
+      self.noteCount.text = "\(self.savedNotes.count) Notes"
+      self.tableView.reloadData()
     }))
     optionsAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
     present(optionsAlert, animated: true)
@@ -191,4 +149,55 @@ extension ViewController {
       return ""
     }
   }
+  
+  func updateNotesNumber() {
+    noteCount.text = "\(savedNotes.count) Notes"
+  }
 }
+
+extension ViewController: DataDelegate {
+  func reload() {
+    loadData()
+  }
+}
+
+//extension ViewController {
+//
+//  let deleteButton = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(massDelete))
+//  let composeButton = UIBarButtonItem(title: "Compose", style: .plain, target: self, action: #selector(createNewNote))
+//  let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(confirmDelete))
+//  let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(abort))
+  
+//  @objc func massDelete() {
+//    isEditing.toggle()
+//    self.navigationItem.rightBarButtonItem = doneButton
+//    self.navigationItem.leftBarButtonItem = cancelButton
+//  }
+//
+//  @objc func confirmDelete() {
+//    if let selectedRows = tableView.indexPathsForSelectedRows {
+//      var items = [noteData]()
+//      for indexPath in selectedRows {
+//        items.append(savedNotes[indexPath.row])
+//      }
+//      for item in items {
+//        if let index = savedNotes.firstIndex(of: item) {
+//        savedNotes.remove(at: index)
+//        }
+//      }
+//      tableView.beginUpdates()
+//      tableView.deleteRows(at: selectedRows, with: .automatic)
+//      tableView.endUpdates()
+//    }
+//
+//    self.navigationItem.rightBarButtonItem = deleteButton
+//    self.navigationItem.leftBarButtonItem = composeButton
+//    isEditing = false
+//  }
+//
+//  @objc func abort() {
+//    isEditing = false
+//    self.navigationItem.rightBarButtonItem = deleteButton
+//    self.navigationItem.leftBarButtonItem = composeButton
+//  }
+//}
