@@ -59,14 +59,14 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0hl-Wb-vW8">
-                                                    <rect key="frame" x="20" y="37" width="36" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0hl-Wb-vW8">
+                                                    <rect key="frame" x="20" y="37" width="36" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Body" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yi9-8i-vwF">
-                                                    <rect key="frame" x="66" y="37" width="39.5" height="21"/>
+                                                    <rect key="frame" x="66" y="37" width="39.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -76,8 +76,10 @@
                                                 <constraint firstItem="La8-d4-MF8" firstAttribute="leading" secondItem="EN8-I8-ZQS" secondAttribute="leadingMargin" constant="0.5" id="KYn-zi-Kze"/>
                                                 <constraint firstItem="0hl-Wb-vW8" firstAttribute="leading" secondItem="EN8-I8-ZQS" secondAttribute="leadingMargin" id="Os0-qU-sNY"/>
                                                 <constraint firstItem="La8-d4-MF8" firstAttribute="top" secondItem="EN8-I8-ZQS" secondAttribute="topMargin" id="V1H-cE-ic8"/>
+                                                <constraint firstAttribute="bottom" secondItem="yi9-8i-vwF" secondAttribute="bottom" constant="17.5" id="ehr-yG-ccP"/>
                                                 <constraint firstItem="0hl-Wb-vW8" firstAttribute="baseline" secondItem="yi9-8i-vwF" secondAttribute="baseline" id="kGT-XY-rxk"/>
                                                 <constraint firstItem="yi9-8i-vwF" firstAttribute="leading" secondItem="0hl-Wb-vW8" secondAttribute="trailing" constant="10" id="kMl-xP-eIz"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="0hl-Wb-vW8" secondAttribute="bottom" constant="6.5" id="mZX-mj-m1a"/>
                                                 <constraint firstItem="0hl-Wb-vW8" firstAttribute="top" secondItem="La8-d4-MF8" secondAttribute="bottom" constant="4" id="plR-yU-crY"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -106,6 +108,7 @@
                     <tabBarItem key="tabBarItem" title="Compose" image="square.and.pencil" catalog="system" id="dCd-0a-7gi"/>
                     <navigationItem key="navigationItem" id="O3h-ze-oiZ"/>
                     <connections>
+                        <outlet property="noteTable" destination="eiC-2M-Rxl" id="Hb4-9A-iWT"/>
                         <segue destination="YrL-8H-ZGp" kind="show" identifier="sendData" id="qCs-rg-l3m"/>
                     </connections>
                 </viewController>
