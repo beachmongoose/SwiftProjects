@@ -77,7 +77,6 @@ extension DetailViewController {
   func getTitle() {
     if !textField.text.isEmpty {
       let lines = textField.text.components(separatedBy: "\n")
-      print(lines)
       selectedNote?.title = lines[0]
     } else {
       selectedNote?.title = ""
