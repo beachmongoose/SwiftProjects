@@ -22,6 +22,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     locationManager?.delegate = self
     locationManager?.requestAlwaysAuthorization()
     view.backgroundColor = .gray
+    distanceCircle.layer.cornerRadius = 128
     
     super.viewDidLoad()
   }
@@ -64,26 +65,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
       
       case .far:
         self.view.backgroundColor = UIColor.blue
-        self.distanceReading.text = "FAR"
-        self.beaconMessage.text = "Tracking \(self.focusedBeacon ?? "Beacon")"
+        self.showDisplay(withDistance: "FAR", circleSize: 0.3, andBGColor: UIColor.blue)
         
       case .near:
-        self.view.backgroundColor = UIColor.orange
-        self.distanceReading.text = "NEAR"
-        self.beaconMessage.text = "Tracking \(self.focusedBeacon ?? "Beacon")"
+        self.showDisplay(withDistance: "NEAR", circleSize: 0.6, andBGColor: UIColor.orange)
         
       case .immediate:
-        self.view.backgroundColor = UIColor.red
-        self.distanceReading.text = "RIGHT HERE"
-        self.beaconMessage.text = "Tracking \(self.focusedBeacon ?? "Beacon")"
+        self.showDisplay(withDistance: "RIGHT HERE", circleSize: 0.9, andBGColor: UIColor.red)
         
       default:
         self.view.backgroundColor = .gray
         self.distanceReading.text = "UNKNOWN"
-        self.beaconMessage.text = "No beacon Detected"
+        self.beaconMessage.text = "No Beacon\nDetected"
       }
     }
   }
   
+  func showDisplay(withDistance text: String, circleSize num: CGFloat, andBGColor background: UIColor) {
+    self.view.backgroundColor = background
+    self.distanceReading.text = "\(text)"
+    self.beaconMessage.text = "Tracking\n\(self.focusedBeacon ?? "Beacon")"
+    UIView.animate(withDuration: 1, delay: 0, options: [], animations: {
+      self.distanceCircle.transform = CGAffineTransform(scaleX: num, y: num)
+    })
+  
+  }
 }
 
