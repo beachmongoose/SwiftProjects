@@ -67,3 +67,11 @@ extension String {
 }
 
 print(testString.lines())
+
+let languages = ["Python", "Ruby", "Swift"]
+let input = "Swift is like Objective-C without the C"
+
+languages.contains("Swift")
+input.contains("Swift")
+// if languages contains any of the words that input contains
+languages.contains(where: input.contains)
