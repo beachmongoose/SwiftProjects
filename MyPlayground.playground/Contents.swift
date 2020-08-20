@@ -48,3 +48,15 @@ print(redboxes)
 let points = Array(1...100)
 let sum = points.reduce(0,+)
 print(sum)
+
+func evensAndOdds() {
+for n in 1...100 {
+  if n % 2 == 0 {
+    print("\(n) is True")
+  } else {
+    print("\(n) is False")
+  }
+  }
+}
+
+evensAndOdds()

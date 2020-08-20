@@ -34,7 +34,9 @@ extension ViewController: UINavigationControllerDelegate, UIImagePickerControlle
     present(picker, animated: true)
   }
   
-  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+  func imagePickerController(_ picker: UIImagePickerController,
+  didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    
     guard let image = info[.editedImage] as? UIImage else {return }
    
     dismiss(animated: true)
@@ -85,8 +87,12 @@ extension ViewController {
       
       let paragraphStyle = NSMutableParagraphStyle()
       paragraphStyle.alignment = .center
-      let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 35), .paragraphStyle: paragraphStyle, .foregroundColor: UIColor.white,
-          //  .strokeColor: UIColor.black, .strokeWidth: 3
+      let attributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont(name: "Helvetica-Bold", size: 60) ?? .systemFont(ofSize: 40),
+        .paragraphStyle: paragraphStyle,
+        .foregroundColor: UIColor.white,
+        .strokeColor: UIColor.black,
+        .strokeWidth: -4
       ]
       
       let top = topText
@@ -94,10 +100,16 @@ extension ViewController {
       let attributedStringTop = NSAttributedString(string: top, attributes: attributes)
       let attributedStringBottom = NSAttributedString(string: bottom, attributes: attributes)
       
-      let imageCenter = image.size.width / 2
+//      let imageCenter = image.size.width / 2
+      let center = imageView.frame.size.width / 2
+      let imageSize = imageView.frame.size
+      print(center)
       
-      attributedStringTop.draw(with: CGRect(x: imageCenter, y: 20, width: image.size.width, height: image.size.height), options: .usesLineFragmentOrigin, context: nil)
-      attributedStringBottom.draw(with: CGRect(x: imageCenter, y: image.size.height - 20, width: image.size.width, height: image.size.height), options: .usesLineFragmentOrigin, context: nil)
+      let rectTop = CGRect(x: center, y: 20, width: imageSize.width, height: imageSize.height)
+      let rectBottom = CGRect(x: center, y: imageSize.height - 20, width: imageSize.width, height: imageSize.height)
+      
+      attributedStringTop.draw(with: rectTop, options: .usesLineFragmentOrigin, context: nil)
+      attributedStringBottom.draw(with: rectBottom, options: .usesLineFragmentOrigin, context: nil)
     
     }
     imageView.image = img
