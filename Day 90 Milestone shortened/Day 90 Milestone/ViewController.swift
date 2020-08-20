@@ -9,6 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController {
+  @IBOutlet var bottomTextButton: UIButton!
+  @IBOutlet var topTextButton: UIButton!
   @IBOutlet var imageView: UIImageView!
   var currentImage: UIImage?
   var topText = ""
@@ -45,32 +47,34 @@ extension ViewController: UINavigationControllerDelegate, UIImagePickerControlle
     
     imageView.image = image
     
+    topText = ""
+    bottomText = ""
+    
   }
   
   @IBAction func addTopText(_ sender: UIButton) {
-    guard currentImage != nil else { return }
-    let topTextAlert = UIAlertController(title: "Enter Top Text", message: nil, preferredStyle: .alert)
-    topTextAlert.addTextField()
-    topTextAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-    topTextAlert.addAction(UIAlertAction(title: "OK", style: .default) { [ weak self, weak topTextAlert] action in
-      guard let text = topTextAlert?.textFields?[0].text else { return }
-      self?.topText = text
-      self?.processImage()
-    })
-    present(topTextAlert, animated: true)
+    addText(placement: "Top", sender: topTextButton)
   }
   
   @IBAction func addBottomText(_ sender: UIButton) {
+    addText(placement: "Bottom", sender: bottomTextButton)
+  }
+  
+  func addText(placement: String, sender: UIButton) {
     guard currentImage != nil else { return }
-    let bottomTextAlert = UIAlertController(title: "Enter Bottom Text", message: nil, preferredStyle: .alert)
-    bottomTextAlert.addTextField()
-    bottomTextAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-    bottomTextAlert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak bottomTextAlert] action in
-      guard let text = bottomTextAlert?.textFields?[0].text else { return }
-      self?.bottomText = text
+    let textAlert = UIAlertController(title: "Enter \(placement) Text", message: nil, preferredStyle: .alert)
+    textAlert.addTextField()
+    textAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    textAlert.addAction(UIAlertAction(title: "OK", style: .default) { [ weak self, weak textAlert] action in
+      guard let text = textAlert?.textFields?[0].text else { return }
+      if sender == self?.topTextButton {
+        self?.topText = text
+      } else {
+        self?.bottomText = text
+      }
       self?.processImage()
     })
-    present(bottomTextAlert, animated: true)
+    present(textAlert, animated: true)
   }
 
 }
@@ -79,33 +83,27 @@ extension ViewController {
   
   func processImage() {
     guard let image = currentImage else { return }
+    guard let imageSize = imageView?.frame.size else { return }
+    
     let renderer = UIGraphicsImageRenderer(size: image.size)
     
     let img = renderer.image { context in
       
-      currentImage?.draw(at: CGPoint(x: 0, y: 0))
-      
-      let paragraphStyle = NSMutableParagraphStyle()
-      paragraphStyle.alignment = .center
-      let attributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont(name: "Helvetica-Bold", size: 60) ?? .systemFont(ofSize: 40),
-        .paragraphStyle: paragraphStyle,
-        .foregroundColor: UIColor.white,
-        .strokeColor: UIColor.black,
-        .strokeWidth: -4
-      ]
+      image.draw(at: CGPoint(x: 0, y: 0))
       
       let top = topText
       let bottom = bottomText
       let attributedStringTop = NSAttributedString(string: top, attributes: attributes)
       let attributedStringBottom = NSAttributedString(string: bottom, attributes: attributes)
       
-//      let imageCenter = image.size.width / 2
-      let center = imageView.frame.size.width / 2
-      let imageSize = imageView.frame.size
+      let center = imageSize.width / 2
+      let imageWidth = imageSize.width
+      let imageHeight = imageSize.height
+      let bottomAlign = image.size.height - 80
+
       
-      let rectTop = CGRect(x: center, y: 20, width: imageSize.width, height: imageSize.height)
-      let rectBottom = CGRect(x: center, y: imageSize.height - 20, width: imageSize.width, height: imageSize.height)
+      let rectTop = CGRect(x: center, y: 20, width: imageWidth, height: imageHeight)
+      let rectBottom = CGRect(x: center, y: bottomAlign, width: imageWidth, height: imageHeight)
       
       attributedStringTop.draw(with: rectTop, options: .usesLineFragmentOrigin, context: nil)
       attributedStringBottom.draw(with: rectBottom, options: .usesLineFragmentOrigin, context: nil)
@@ -118,8 +116,11 @@ extension ViewController {
 
 extension ViewController {
   func navigationButtons() {
-    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(selectPicture))
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(sharePicture))
+    
+    let addPic = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(selectPicture))
+    navigationItem.leftBarButtonItem = addPic
+    let sharePic = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(sharePicture))
+    navigationItem.rightBarButtonItem = sharePic
   }
   
   @objc func sharePicture() {
@@ -133,5 +134,20 @@ extension ViewController {
       present (viewController, animated: true)
   }
   
+}
+
+extension ViewController {
+  var attributes: [NSAttributedString.Key : Any] {
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.alignment = .center
+    return [
+      .font: UIFont(name: "Helvetica-Bold", size: 60) ?? .systemFont(ofSize: 40),
+      .paragraphStyle: paragraphStyle,
+      .foregroundColor: UIColor.white,
+      .strokeColor: UIColor.black,
+      .strokeWidth: -4
+    ]
+  }
+
 }
 
