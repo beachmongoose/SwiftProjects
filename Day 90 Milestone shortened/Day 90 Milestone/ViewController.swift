@@ -28,7 +28,8 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-  
+
+  // MARK: - Add Image
   @objc func selectPicture() {
     let picker = UIImagePickerController()
     picker.allowsEditing = true
@@ -51,7 +52,8 @@ extension ViewController: UINavigationControllerDelegate, UIImagePickerControlle
     bottomText = ""
     
   }
-  
+ 
+  // MARK: - Add Text
   @IBAction func addTopText(_ sender: UIButton) {
     addText(placement: "Top", sender: topTextButton)
   }
@@ -79,6 +81,7 @@ extension ViewController: UINavigationControllerDelegate, UIImagePickerControlle
 
 }
 
+// MARK: - Process Image
 extension ViewController {
   
   func processImage() {
@@ -91,10 +94,8 @@ extension ViewController {
       
       image.draw(at: CGPoint(x: 0, y: 0))
       
-      let top = topText
-      let bottom = bottomText
-      let attributedStringTop = NSAttributedString(string: top, attributes: attributes)
-      let attributedStringBottom = NSAttributedString(string: bottom, attributes: attributes)
+      let attributedStringTop = NSAttributedString(string: topText, attributes: attributes)
+      let attributedStringBottom = NSAttributedString(string: bottomText, attributes: attributes)
       
       let center = imageSize.width / 2
       let imageWidth = imageSize.width
@@ -114,6 +115,7 @@ extension ViewController {
   
 }
 
+// MARK: - Buttons
 extension ViewController {
   func navigationButtons() {
     
@@ -136,6 +138,7 @@ extension ViewController {
   
 }
 
+// MARK: - Text Style
 extension ViewController {
   var attributes: [NSAttributedString.Key : Any] {
     let paragraphStyle = NSMutableParagraphStyle()
