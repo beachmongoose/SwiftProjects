@@ -15,6 +15,7 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     
     notificationController()
+    setPassword()
     
     title = "Nothing to see here"
     
@@ -40,17 +41,20 @@ extension ViewController {
           if success {
             self?.unlockSecretMessage()
           } else {
-            self?.showMessage(title: "Authentication Failed", message: "You could not be verified; please try again")
+            self?.showError(title: "Authentication Failed",
+                            message: "You could not be verified; please try again")
           }
         }
       }
     } else {
-      self.showMessage(title: "Biometry Unavailable", message: "Your device is not configured for biometric authentication.")
+      self.showError(title: "Biometry Unavailable",
+                     message: "Your device is not configured for biometric authentication.")
     }
   }
   
   func unlockSecretMessage() {
     secret.isHidden = false
+    toggleDoneButton("show")
     title = "Secret Stuff!"
     
     secret.text = KeychainWrapper.standard.string(forKey: "SecretMessage") ?? ""
@@ -61,6 +65,7 @@ extension ViewController {
     KeychainWrapper.standard.set(secret.text, forKey: "SecretMessage")
     secret.resignFirstResponder()
     secret.isHidden = true
+    toggleDoneButton("hide")
     title = "Nothing to see here"
   }
 }
@@ -101,9 +106,40 @@ extension ViewController {
 }
 
 extension ViewController {
-  func showMessage (title: String, message: String) {
+  func showError (title: String, message: String) {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alertController.addAction(UIAlertAction(title: "OK", style: .default))
+    alertController.addAction(UIAlertAction(title: "Password", style: .default, handler: passwordPrompt))
     present(alertController, animated: true)
+  }
+  
+  func toggleDoneButton(_ state: String) {
+    if state == "show" {
+      let button = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(saveSecretMessage))
+      navigationItem.rightBarButtonItem = button
+    } else {
+      navigationItem.rightBarButtonItem = nil
+    }
+  }
+  
+  func setPassword() {
+    KeychainWrapper.standard.set("Password", forKey: "Password")
+  }
+  
+  func passwordPrompt(action: UIAlertAction) {
+    let passwordAlert = UIAlertController(title: "Enter Password", message: nil, preferredStyle: .alert)
+    passwordAlert.addTextField()
+    passwordAlert.textFields?[0].isSecureTextEntry = true
+    passwordAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    passwordAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+      guard let text = passwordAlert.textFields?[0].text else { return }
+      let password = KeychainWrapper.standard.string(forKey: "Password")
+      if text == password {
+        self.unlockSecretMessage()
+      } else {
+        self.showError(title: "Incorrect Password", message: "Does not match password on file.")
+      }
+    }))
+    present(passwordAlert, animated: true)
   }
 }
