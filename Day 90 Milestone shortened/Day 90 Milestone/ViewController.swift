@@ -86,7 +86,6 @@ extension ViewController {
   
   func processImage() {
     guard let image = currentImage else { return }
-    guard let imageSize = imageView?.frame.size else { return }
     
     let renderer = UIGraphicsImageRenderer(size: image.size)
     
@@ -94,23 +93,26 @@ extension ViewController {
       
       image.draw(at: CGPoint(x: 0, y: 0))
       
-      let attributedStringTop = NSAttributedString(string: topText, attributes: attributes)
-      let attributedStringBottom = NSAttributedString(string: bottomText, attributes: attributes)
+      let bottomY = image.size.height - 80
       
-      let center = imageSize.width / 2
-      let imageWidth = imageSize.width
-      let imageHeight = imageSize.height
-      let bottomAlign = image.size.height - 80
-
-      
-      let rectTop = CGRect(x: center, y: 20, width: imageWidth, height: imageHeight)
-      let rectBottom = CGRect(x: center, y: bottomAlign, width: imageWidth, height: imageHeight)
-      
-      attributedStringTop.draw(with: rectTop, options: .usesLineFragmentOrigin, context: nil)
-      attributedStringBottom.draw(with: rectBottom, options: .usesLineFragmentOrigin, context: nil)
+      createText(for: topText, at: 20)
+      createText(for: bottomText, at: bottomY)
     
     }
     imageView.image = img
+  }
+  
+  func createText(for textPart: String, at yAxis: CGFloat) {
+    guard let imageSize = currentImage?.size else { return }
+    let attributedString = NSAttributedString(string: textPart, attributes: attributes)
+    
+    let imageWidth = imageSize.width
+    let imageHeight = imageSize.height
+    
+    let rect = CGRect(x: 0, y: yAxis, width: imageWidth, height: imageHeight)
+    
+    attributedString.draw(with: rect, options: .usesLineFragmentOrigin, context: nil)
+    
   }
   
 }
@@ -151,6 +153,4 @@ extension ViewController {
       .strokeWidth: -4
     ]
   }
-
-}
 
