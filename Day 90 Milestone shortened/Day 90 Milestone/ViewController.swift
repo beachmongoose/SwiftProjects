@@ -174,4 +174,3 @@ extension ViewController {
     let textHeight = checkText(bottomText, textWidth)
     return (imageHeight) - CGFloat(textHeight)
   }
-}
