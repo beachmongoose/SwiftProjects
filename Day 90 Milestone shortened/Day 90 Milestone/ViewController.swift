@@ -93,9 +93,7 @@ extension ViewController {
       
       image.draw(at: CGPoint(x: 0, y: 0))
       
-      let bottomY = image.size.height - 80
-      
-      createText(for: topText, at: 20)
+      createText(for: topText, at: 0)
       createText(for: bottomText, at: bottomY)
     
     }
@@ -114,6 +112,7 @@ extension ViewController {
     attributedString.draw(with: rect, options: .usesLineFragmentOrigin, context: nil)
     
   }
+  
   
 }
 
@@ -145,12 +144,33 @@ extension ViewController {
   var attributes: [NSAttributedString.Key : Any] {
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .center
+    
+    let fullSize = (currentImage?.size.width)! + (currentImage?.size.height)!
+    let fontSize = fullSize / 20
+    
     return [
-      .font: UIFont(name: "Helvetica-Bold", size: 60) ?? .systemFont(ofSize: 40),
+      .font: UIFont(name: "Helvetica-Bold", size: fontSize) ?? .systemFont(ofSize: 40),
       .paragraphStyle: paragraphStyle,
       .foregroundColor: UIColor.white,
       .strokeColor: UIColor.black,
       .strokeWidth: -4
     ]
   }
-}
+  
+// MARK: - Bottom Alignment
+  func checkText(_ text: String, _ width: Int) -> Int {
+      let nsText = NSString(string: text)
+      let size = CGSize(width: CGFloat(width), height: .greatestFiniteMagnitude)
+      let textRect = nsText.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+
+      return Int(ceil(textRect.size.height))
+  }
+  
+  var bottomY: CGFloat {
+    guard let image = currentImage?.size else { return (imageView?.image?.size.width)! - 80 }
+    
+    let imageHeight = image.height
+    let textWidth = Int(image.width) - 14
+    let textHeight = checkText(bottomText, textWidth)
+    return (imageHeight) - CGFloat(textHeight)
+  }
