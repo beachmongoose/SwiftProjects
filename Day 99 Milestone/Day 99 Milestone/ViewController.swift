@@ -16,9 +16,10 @@ class ViewController: UIViewController {
   @IBOutlet var cardView: UIView!
   var pictureCards = [UIImage]()
   var textCards = [UIImage]()
+  var allCards = [UIImage]()
   
   var cardButtons = [UIButton]()
-  var cardBack = UIImage()
+//  var cardBack = UIView()
   
   var cardOne: UIButton?
   var cardTwo: UIButton?
@@ -62,8 +63,8 @@ extension ViewController {
     let width = 130
     let height = 181
     
-    var offsetX = 20
-    var offsetY = 0
+    var offsetX = 100
+    var offsetY = 20
     var x = 0
     
     for row in 0..<4 {
@@ -84,7 +85,7 @@ extension ViewController {
         x += 1
         if x == 4 {
           x = 0
-          offsetX = 20
+          offsetX = 100
           offsetY += 20
         }
       }
@@ -95,12 +96,13 @@ extension ViewController {
     func addCardPics(to buttons: [UIButton]) {
        DispatchQueue.main.async {
         
-        var cards = self.pictureCards + self.textCards
-        cards.shuffle()
+        self.allCards = self.pictureCards + self.textCards
+        self.allCards.shuffle()
         
-          if cards.count == buttons.count {
+        if self.allCards.count == buttons.count {
              for i in 0 ..< buttons.count {
-                buttons[i].setImage(cards[i], for: .normal)
+              buttons[i].setImage(self.cardBack(), for: .normal)
+              buttons[i].tag = i
           }
         }
       }
@@ -110,34 +112,44 @@ extension ViewController {
 // MARK: - Card Actions
 extension ViewController {
   @objc func cardTapped(sender: UIButton) {
-    flipToReveal(sender)
+    guard sender != cardOne else { return }
+    flipToReveal("front", sender)
       if cardOne == nil {
         self.cardOne = sender
         } else {
       cardTwo = sender
-      checkForMatch()
     }
   }
   
-  func flipToReveal(_ card: UIButton) {
-    
+  func flipToReveal(_ side: String, _ card: UIButton) {
+    if side == "front" {
+      card.setImage(allCards[card.tag], for: .normal)
+      UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromLeft, animations: nil, completion: { _ in
+        self.checkForMatch()
+      })
+    } else {
+      card.setImage(cardBack(), for: .normal)
+      UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: nil, completion: nil)
+    }
   }
     
     func checkForMatch() {
       guard let cardOne = self.cardOne?.imageView?.image else { return }
       guard let cardTwo = self.cardTwo?.imageView?.image else { return }
+      guard self.cardOne != nil && self.cardTwo != nil else { return }
+      
       do {
         let index1 = try getCardDetails(for: cardOne)
         let index2 = try getCardDetails(for: cardTwo)
         
-        if index1 == index2 {
+        if index1 == index2 && cardOne != cardTwo {
           tries += 1
           cardMatch()
         } else {
           tries += 1
-          flipBackOver(self.cardOne)
+          flipToReveal("back", self.cardOne!)
           self.cardOne = nil
-          flipBackOver(self.cardTwo)
+          flipToReveal("back", self.cardTwo!)
           self.cardTwo = nil
         }
       }
@@ -163,14 +175,15 @@ extension ViewController {
       self.cardTwo = nil
     }
     
-    func flipBackOver(_ card: UIButton?) {
-      guard let selectedCard = card else { return }
-      selectedCard.isHidden = false
+    func pause() {
+      UIView.animate(withDuration: 0.5, delay: 0, animations: {
+
+      })
     }
     
     func disappear(_ selectedCard: UIButton?) {
       guard let card = selectedCard else { return }
-      UIView.animate(withDuration: 0.5, delay: 0, animations: {
+      UIView.animate(withDuration: 0.5, delay: 0.8, animations: {
         card.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
       }) { _ in
         card.isHidden = true
@@ -227,4 +240,25 @@ extension ViewController {
     resetAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: resetGame))
     present(resetAlert, animated: true)
   }
+  
+  func cardBack() -> UIImage {
+    
+    let rect = CGRect(x: 0, y: 0, width: 130, height: 181)
+    let renderer = UIGraphicsImageRenderer(bounds: rect)
+    
+    let cardBack = renderer.image { context in
+      UIColor.blue.setFill()
+      let clipPath: CGPath = UIBezierPath(roundedRect: rect, cornerRadius: 8).cgPath
+      context.cgContext.addPath(clipPath)
+      context.cgContext.drawPath(using: .fillStroke)
+      UIColor.clear.setFill()
+      UIColor.white.setStroke()
+      context.cgContext.setLineWidth(10)
+      let circle = CGRect(x: 40, y: 65.5, width: 50, height: 50)
+      context.cgContext.addEllipse(in: circle)
+      context.cgContext.drawPath(using: .stroke)
+    }
+    return cardBack
+  }
+
 }
