@@ -19,7 +19,6 @@ class ViewController: UIViewController {
   var allCards = [UIImage]()
   
   var cardButtons = [UIButton]()
-//  var cardBack = UIView()
   
   var cardOne: UIButton?
   var cardTwo: UIButton?
@@ -56,9 +55,7 @@ extension ViewController {
     pictureCards.append(contentsOf: getCards(from: 0, to: 7))
     textCards.append(contentsOf: getCards(from: 8, to: 15))
   }
-}
-
-extension ViewController {
+  
   func buttonSetup() {
     let width = 130
     let height = 181
@@ -92,21 +89,21 @@ extension ViewController {
     }
     addCardPics(to: cardButtons)
   }
-    
-    func addCardPics(to buttons: [UIButton]) {
-       DispatchQueue.main.async {
-        
-        self.allCards = self.pictureCards + self.textCards
-        self.allCards.shuffle()
-        
-        if self.allCards.count == buttons.count {
-             for i in 0 ..< buttons.count {
-              buttons[i].setImage(self.cardBack(), for: .normal)
-              buttons[i].tag = i
-          }
+  
+  func addCardPics(to buttons: [UIButton]) {
+     DispatchQueue.main.async {
+      
+      self.allCards = self.pictureCards + self.textCards
+      self.allCards.shuffle()
+      
+      if self.allCards.count == buttons.count {
+           for i in 0 ..< buttons.count {
+            buttons[i].setImage(self.cardBack(), for: .normal)
+            buttons[i].tag = i
         }
       }
     }
+  }
 }
 
 // MARK: - Card Actions
@@ -124,12 +121,20 @@ extension ViewController {
   func flipToReveal(_ side: String, _ card: UIButton) {
     if side == "front" {
       card.setImage(allCards[card.tag], for: .normal)
-      UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromLeft, animations: nil, completion: { _ in
-        self.checkForMatch()
+      UIView.transition(with: card,
+                        duration: 0.5,
+                        options: .transitionFlipFromLeft,
+                        animations: nil,
+                        completion: { _ in
+                          self.checkForMatch()
       })
     } else {
       card.setImage(cardBack(), for: .normal)
-      UIView.transition(with: card, duration: 0.5, options: .transitionFlipFromRight, animations: nil, completion: nil)
+      UIView.transition(with: card,
+                        duration: 0.5,
+                        options: .transitionFlipFromRight,
+                        animations: nil,
+                        completion: nil)
     }
   }
     
@@ -169,19 +174,13 @@ extension ViewController {
       }
     
     func cardMatch() {
-      disappear(self.cardOne)
+      clearFromScreen(self.cardOne)
       self.cardOne = nil
-      disappear(self.cardTwo)
+      clearFromScreen(self.cardTwo)
       self.cardTwo = nil
     }
     
-    func pause() {
-      UIView.animate(withDuration: 0.5, delay: 0, animations: {
-
-      })
-    }
-    
-    func disappear(_ selectedCard: UIButton?) {
+    func clearFromScreen(_ selectedCard: UIButton?) {
       guard let card = selectedCard else { return }
       UIView.animate(withDuration: 0.5, delay: 0.8, animations: {
         card.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
@@ -225,8 +224,9 @@ extension ViewController {
   }
 }
 
-// MARK: - Controls
+// MARK: - Interface
 extension ViewController {
+  
   func navigationButtons() {
     let triesIndicator = UIBarButtonItem(title: "Tries: \(tries)", style: .plain, target: self, action: nil)
     navigationItem.rightBarButtonItem = triesIndicator
