@@ -1,3 +1,5 @@
+import UIKit
+
 func scoreCheck() {
   let scores = [100, 85, 90]
   let formatted = scores.map {
@@ -59,4 +61,21 @@ for n in 1...100 {
   }
 }
 
-evensAndOdds()
+
+//  let rect = CGRect(x: 0, y: 0, width: 130, height: 181)
+//  let renderer = UIGraphicsImageRenderer(bounds: rect)
+//
+//  let rendered = renderer.image { context in
+//    UIColor.blue.setFill()
+//    context.cgContext.fill(CGRect(x: 0, y: 0, width: 130, height: 181))
+//    UIColor.clear.setFill()
+//
+//  }
+
+let rect = CGRect(x: 0, y: 0, width: 256, height: 256)
+let roundedRect = UIBezierPath(roundedRect: rect, cornerRadius: 50)
+let circle = UIBezierPath(ovalIn: rect)
+let layer = CAShapeLayer()
+layer.path = UIBezierPath(roundedRect: CGRect(x: 64, y: 64, width: 160, height: 160), cornerRadius: 50).cgPath
+layer.fillColor = UIColor.red.cgColor
+view.layer.addSublayer(layer)
