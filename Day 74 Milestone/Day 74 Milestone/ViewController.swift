@@ -12,7 +12,6 @@ class ViewController: UIViewController {
   @IBOutlet var noteCount: UILabel!
   @IBOutlet var tableView: UITableView!
   var savedNotes = [noteData]()
-  var delegate: DataDelegate?
   var todaysDate: String {
     let formatter = DateFormatter()
     formatter.dateStyle = .short
@@ -96,9 +95,12 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
       detailViewController.arrayNumber = indexPath.row
       detailViewController.isNewNote = false
       detailViewController.savedNotes = savedNotes
-      detailViewController.delegate = self
       navigationController?.pushViewController(detailViewController, animated: true)
     }
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    loadData()
   }
 }
 
@@ -142,22 +144,16 @@ extension ViewController: UIGestureRecognizerDelegate {
   }
   
   func getPreviewLine(for note: noteData) -> String {
-    if !note.body.isEmpty {
+    guard !note.body.isEmpty  else { return "" }
       let lines = note.body.components(separatedBy: "\n")
+    guard lines.count > 1 else {
+        return ""
+      }
       return lines[1]
-    } else {
-      return ""
     }
-  }
   
   func updateNotesNumber() {
     noteCount.text = "\(savedNotes.count) Notes"
-  }
-}
-
-extension ViewController: DataDelegate {
-  func reload() {
-    loadData()
   }
 }
 
