@@ -8,16 +8,11 @@
 
 import UIKit
 
-protocol DataDelegate {
-  func reload()
-}
-
 class DetailViewController: UIViewController {
   
   @IBOutlet var textField: UITextView!
   var savedNotes = [noteData]()
   var isNewNote = false
-  var delegate: DataDelegate?
   var selectedNote: noteData?
   var arrayNumber: Int?
   var todaysDate: String {
@@ -64,10 +59,6 @@ extension DetailViewController {
     let saveConfirm = UIAlertController(title: "Note Saved", message: nil, preferredStyle: .alert)
     saveConfirm.addAction(UIAlertAction(title: "OK", style: .default, handler: backToMain))
     present(saveConfirm, animated: true)
-    
-    if delegate != nil {
-      delegate?.reload()
-    }
 
   }
   
